@@ -1,3 +1,5 @@
+from secret import secret_key
+
 class admin:
 	def mint(amount):
 		econ_ref = None
