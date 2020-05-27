@@ -28,13 +28,15 @@ class player:
 	balance = 0.0000
 
 	def work(self):
-		assert(self.able_to_work)
+		if(not self.able_to_work):
+			raise Exception
 		self.able_to_work = False
 		econ_ref.work_tax(econ_ref.work_payment)
 		return None
 	
 	def pay(self, amount, player):
-		assert(self.balance > amount and amount > 0)
+		if((self.balance > amount and amount > 0) == False):
+			raise Exception
 		balance -= amount
 		return None
 	
