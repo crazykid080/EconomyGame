@@ -13,12 +13,13 @@ class economy:
 	wage_tax = 0.35
 	referral_tax = 0.1
 	
-	stored_money = 1000
+	budget = 1000
 	
 	def work_tax(amount, refferer_ID):
 		taxed = amount * wage_tax
 		amount -= taxed
 		amount = round(amount, 4) #Prevent floating point errors
+		budget += round(taxed, 4)
 		return amount
 	
 class player:
@@ -40,3 +41,4 @@ class player:
 	def recieve(amount, sender):
 		assert(amount > 0) #Prevent negative transfers
 		return None
+		
