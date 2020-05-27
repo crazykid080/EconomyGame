@@ -11,7 +11,7 @@ class economy:
 	wage_tax = 0.35
 	referral_tax = 0.1
 	
-	stored_money = 10000
+	stored_money = 1000
 	
 	def tax(amount, refferer_ID):
 		return None
