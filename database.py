@@ -19,7 +19,7 @@ class database:
 		#verify user does not exist
 		#verify email does not exist
 		#sanitize. How? Regex maybe?
-		#add user to databass
+		#add user to database
 		return None
 	
 	def change_password(self, user, old_password, new_password):
