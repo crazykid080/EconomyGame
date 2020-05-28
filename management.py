@@ -17,5 +17,4 @@ if __name__ == "__main__":
 			print("Not enough arguments")
 			exit()
 		result = add_user_test(testdb, sys.argv[2], sys.argv[3], sys.argv[4])
-		print(result)
 		exit()
