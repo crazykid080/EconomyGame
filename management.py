@@ -1,9 +1,11 @@
 import database, beginning
 import sys
-from passlib.hash import sha256_crypt
+import bcrypt
+from secret import salt
 
 def add_user_test(testdb, name, email, password):
-	enc_password = sha256_crypt.hash(password)
+	password = password.encode()
+	enc_password = bcrypt.hashpw(password, salt)
 	result = testdb.add_user(name, email, enc_password)
 	return result
 
@@ -13,8 +15,12 @@ def get_users(testdb):
 	return True
 
 def login(testdb, user, password):
+	password = password.encode()
+	enc_password = bcrypt.hashpw(password, salt)
 	db_password = testdb.get_password(user)
 	print(db_password)
+	print(enc_password)
+	#print(result)
 	return None
 	
 
