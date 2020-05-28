@@ -37,6 +37,12 @@ class database:
 		if(user  == []): user = None
 		return user
 	
+	def get_password(self, user):
+		user = self.session.query(self.users).filter_by(username=user).all()
+		if(user  == []): raise Exception
+		return user[0][3]
+		
+	
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		user_check = self.get_user(name)

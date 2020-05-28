@@ -12,6 +12,12 @@ def get_users(testdb):
 	print(users)
 	return True
 
+def login(testdb, user, password):
+	db_password = testdb.get_password(user)
+	print(db_password)
+	return None
+	
+
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
 		print("Not enough arguments")
@@ -21,6 +27,8 @@ if __name__ == "__main__":
 	if(command == 'get_users'):
 		get_users(testdb)
 		exit()
+	if(command == 'login'):
+		login(testdb, sys.argv[2], sys.argv[3])
 	if(command == 'add_user'):
 		if(len(sys.argv) < 5):
 			print("Not enough arguments")
