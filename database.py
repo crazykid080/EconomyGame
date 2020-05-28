@@ -15,6 +15,14 @@ class database:
 		Column('email', String(40) ),
 		Column('password', String(70) ) )
 	
+	def get_user(self, table, username):
+		user = self.connection.query(users).filter_by(username=username)
+		return user
+	
+	def get_email(self, table, email):
+		user = self.connection.query(users).filter_by(email=email)
+		return user
+	
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		#verify email does not exist
