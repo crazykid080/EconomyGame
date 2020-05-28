@@ -49,7 +49,8 @@ class database:
 			raise Exception
 		#sanitize. How? Regex maybe?
 		#add user to database
-		self.users.insert().values(username=name, email=email, password=password)
+		new_user = self.users.insert().values(username=name, email=email, password=password)
+		self.session.execute(new_user)
 		self.session.commit()
 		return True
 	
