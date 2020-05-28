@@ -5,8 +5,8 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 class database:
 	connection = None
 	users = None #Bad way to do it? Probably.
-	def __init__(self):
-		engine = db.create_engine('sqlite:///main.sqlite')
+	def __init__(self, name='main'):
+		engine = db.create_engine('sqlite:///'+name+'.sqlite')
 		self.connection = engine.connect()
 		metadata = MetaData()
 		self.users = Table('users', metadata, 
