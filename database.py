@@ -15,17 +15,23 @@ class database:
 		Column('email', String(40) ),
 		Column('password', String(70) ) )
 	
-	def get_user(self, table, username):
+	def get_user(self, username):
 		user = self.connection.query(users).filter_by(username=username)
 		return user
 	
-	def get_email(self, table, email):
+	def get_email(self, email):
 		user = self.connection.query(users).filter_by(email=email)
 		return user
 	
 	def add_user(self, name, email, password):
 		#verify user does not exist
+		user_check = get_user(name)
+		if(user_check != None):
+			raise Exception
 		#verify email does not exist
+		user_check = get_email(email)
+		if(user_check != None):
+			raise Exception
 		#sanitize. How? Regex maybe?
 		#add user to database
 		return None
