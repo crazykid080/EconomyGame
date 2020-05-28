@@ -50,6 +50,7 @@ class database:
 		#sanitize. How? Regex maybe?
 		#add user to database
 		self.users.insert().values(username=name, email=email, password=password)
+		self.session.commit()
 		return True
 	
 	def change_password(self, user, old_password, new_password):
