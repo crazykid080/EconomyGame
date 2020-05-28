@@ -19,7 +19,7 @@ class database:
 		Column('id', Integer, primary_key=True),
 		Column('username', String(25) ),
 		Column('email', String(40) ),
-		Column('password', String(70) ) )
+		Column('password', String(80) ) )
 		
 		metadata.create_all(engine)
 		
