@@ -18,11 +18,10 @@ def login(testdb, user, password):
 	password = password.encode()
 	enc_password = bcrypt.hashpw(password, salt)
 	db_password = testdb.get_password(user)
-	print(db_password)
-	print(enc_password)
-	#print(result)
-	return None
-	
+	if(db_password == enc_password):
+		return True
+	else:
+		return False	
 
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
@@ -34,7 +33,9 @@ if __name__ == "__main__":
 		get_users(testdb)
 		exit()
 	if(command == 'login'):
-		login(testdb, sys.argv[2], sys.argv[3])
+		result = login(testdb, sys.argv[2], sys.argv[3])
+		print(result)
+		exit()
 	if(command == 'add_user'):
 		if(len(sys.argv) < 5):
 			print("Not enough arguments")
