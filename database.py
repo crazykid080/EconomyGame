@@ -3,6 +3,8 @@ import sqlalchemy as db
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import sessionmaker
 
+
+
 class database:
 	connection = None
 	session = None
@@ -18,16 +20,21 @@ class database:
 		Column('username', String(25) ),
 		Column('email', String(40) ),
 		Column('password', String(70) ) )
-	
+		
+		metadata.create_all(engine)
+		
 	def get_user(self, username):
-		query = self.session.query(self.users).filter_by(username=username).all()
-		print(query)
-		#user = self.connection.execute(query)
+		user = self.session.query(self.users).filter_by(username=username).all()
+		if(user  == []): user = None
 		return user
 	
+	def get_all_users(self):
+		users = self.session.query(self.users).all()
+		return users
+	
 	def get_email(self, email):
-		query = self.session.query(self.users).filter_by(email=email)
-		user = self.connection.execute(query)
+		user = self.session.query(self.users).filter_by(email=email).all()
+		if(user  == []): user = None
 		return user
 	
 	def add_user(self, name, email, password):
@@ -38,11 +45,12 @@ class database:
 		#verify email does not exist
 		user_check = self.get_email(email)
 		if(user_check != None):
+			print(user_check)
 			raise Exception
 		#sanitize. How? Regex maybe?
 		#add user to database
 		self.users.insert().values(username=name, email=email, password=password)
-		return None
+		return True
 	
 	def change_password(self, user, old_password, new_password):
 		#verify user exists
