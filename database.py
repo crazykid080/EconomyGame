@@ -59,9 +59,12 @@ class database:
 		self.session.commit()
 		return True
 	
-	def change_password(self, user, old_password, new_password):
+	def change_password(self, user, new_password):
 		#verify user exists
+		if(get_user(user) == None):
+			raise Exception
 		#get current password from db
+		old_password = get_password(user)
 		#compare current to old, return false if false
 		if(old_password == new_password):
 			raise Exception
