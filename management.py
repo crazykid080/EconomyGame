@@ -1,9 +1,9 @@
 import database, beginning
 import sys
 import bcrypt
-from secret import salt
 
 def add_user_test(testdb, name, email, password):
+	salt = bcrypt.gensalt()
 	password = password.encode()
 	enc_password = bcrypt.hashpw(password, salt)
 	result = testdb.add_user(name, email, enc_password)
@@ -16,12 +16,15 @@ def get_users(testdb):
 
 def login(testdb, user, password):
 	password = password.encode()
-	enc_password = bcrypt.hashpw(password, salt)
+	#enc_password = bcrypt.hashpw(password, salt)
 	db_password = testdb.get_password(user)
+	return bcrypt.checkpw(password, db_password)
+	"""
 	if(db_password == enc_password):
 		return True
 	else:
-		return False	
+		return False
+	"""
 
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
