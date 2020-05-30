@@ -1,25 +1,31 @@
 from secret import secret_key
 import sqlalchemy as db
-from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
+from sqlalchemy import Table, Column, Numeric, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import sessionmaker
-
-
 
 class database:
 	connection = None
 	session = None
 	users = None #Bad way to do it? Probably.
+	economy = None
 	def __init__(self, name='main'):
 		engine = db.create_engine('sqlite:///'+name+'.sqlite')
 		self.connection = engine.connect()
 		Session = sessionmaker(bind=engine)
 		self.session = Session()
 		metadata = MetaData()
+		
 		self.users = Table('users', metadata, 
 		Column('id', Integer, primary_key=True),
 		Column('username', String(25) ),
 		Column('email', String(40) ),
 		Column('password', String(80) ) )
+		
+		self.economy = Table('accounts', metadata,
+		Column('id', Integer, primary_key=True),
+		Column('holder', Integer),
+		Column('amount', Numeric(10,4))
+		)
 		
 		metadata.create_all(engine)
 		
