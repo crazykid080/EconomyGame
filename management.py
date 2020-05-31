@@ -1,4 +1,4 @@
-import database, beginning
+import database, economy, player
 import sys
 import bcrypt
 
