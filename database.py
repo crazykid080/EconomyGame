@@ -41,7 +41,8 @@ class database:
 		self.metadata.create_all(engine)
 	
 	def input_transaction(self, account, amount, ref_id=None):
-		new_transaction = self.transactions.insert().values(account_id=account,amount=amount, ref_id=ref_id)
+		timestamp = datetime.datetime.utcnow()
+		new_transaction = self.transactions.insert().values(timestamp=timestamp,account_id=account,amount=amount, ref_id=ref_id)
 		result = self.session.execute(new_transaction)
 		self.session.commit()
 		transaction_id = result.lastrowid
