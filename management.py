@@ -23,6 +23,10 @@ def get_tables(testdb):
 	print(testdb.get_tables())
 	return True
 
+def add_transaction(testdb, account, amount):
+	result = testdb.input_transaction(account, amount)
+	return result
+
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
 		print("Not enough arguments")
@@ -34,7 +38,17 @@ if __name__ == "__main__":
 		exit()
 	if(command == 'get_tables'):
 		get_tables(testdb)
+	if(command == 'add_transaction'):
+		if(len(sys.argv) < 4):
+			print("Not enough arguments")
+			exit()
+		result = add_transaction(testdb, sys.argv[2], sys.argv[3])
+		print(result)
+		exit()
 	if(command == 'login'):
+		if(len(sys.argv) < 4):
+			print("Not enough arguments")
+			exit()
 		result = login(testdb, sys.argv[2], sys.argv[3])
 		print(result)
 		exit()

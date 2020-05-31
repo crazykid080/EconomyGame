@@ -44,6 +44,7 @@ class database:
 		new_transaction = self.transactions.insert().values(account_id=account,amount=amount, ref_id=ref_id)
 		self.session.execute(new_transaction)
 		self.session.commit()
+		return True
 		
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
