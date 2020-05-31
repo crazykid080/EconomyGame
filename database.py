@@ -42,9 +42,10 @@ class database:
 	
 	def input_transaction(self, account, amount, ref_id=None):
 		new_transaction = self.transactions.insert().values(account_id=account,amount=amount, ref_id=ref_id)
-		self.session.execute(new_transaction)
+		result = self.session.execute(new_transaction)
 		self.session.commit()
-		return True
+		transaction_id = result.lastrowid
+		return True, transaction_id
 		
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
@@ -97,4 +98,4 @@ class database:
 		return self.metadata.tables.keys()
 
 if __name__ == '__main__':
-	maindb = database()
+	maindb = database('direct')

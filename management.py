@@ -24,7 +24,7 @@ def get_tables(testdb):
 	return True
 
 def add_transaction(testdb, account, amount):
-	result = testdb.input_transaction(account, amount)
+	result, id = testdb.input_transaction(account, amount)
 	return result
 
 if __name__ == "__main__":
