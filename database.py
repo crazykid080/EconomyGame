@@ -1,33 +1,41 @@
 from secret import secret_key
 import sqlalchemy as db
-from sqlalchemy import Table, Column, Numeric, Integer, String, MetaData, ForeignKey
+from sqlalchemy import Table, Column, Numeric, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
+import datetime
 
 class database:
 	connection = None
 	session = None
+	metadata = None
 	users = None #Bad way to do it? Probably.
 	economy = None
+	transactions = None
 	def __init__(self, name='main'):
 		engine = db.create_engine('sqlite:///'+name+'.sqlite')
 		self.connection = engine.connect()
 		Session = sessionmaker(bind=engine)
 		self.session = Session()
-		metadata = MetaData()
+		self.metadata = MetaData()
 		
-		self.users = Table('users', metadata, 
+		self.users = Table('users', self.metadata, 
 		Column('id', Integer, primary_key=True),
 		Column('username', String(25) ),
 		Column('email', String(40) ),
 		Column('password', String(80) ) )
 		
-		self.economy = Table('accounts', metadata,
+		self.economy = Table('accounts', self.metadata,
 		Column('id', Integer, primary_key=True),
 		Column('holder', Integer),
 		Column('amount', Numeric(10,4))
 		)
 		
-		metadata.create_all(engine)
+		self.transactions = Table('transactions', self.metadata,
+		Column('id', Integer, primary_key=True),
+		Column('timestamp', DateTime, default=datetime.datetime.utcnow())
+		)
+		
+		self.metadata.create_all(engine)
 		
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
@@ -75,7 +83,9 @@ class database:
 		if(old_password == new_password):
 			raise Exception
 		return None
+		
+	def get_tables(self):
+		return self.metadata.tables.keys()
 
 if __name__ == '__main__':
 	maindb = database()
-	insertion = None

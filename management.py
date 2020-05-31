@@ -16,15 +16,12 @@ def get_users(testdb):
 
 def login(testdb, user, password):
 	password = password.encode()
-	#enc_password = bcrypt.hashpw(password, salt)
 	db_password = testdb.get_password(user)
 	return bcrypt.checkpw(password, db_password)
-	"""
-	if(db_password == enc_password):
-		return True
-	else:
-		return False
-	"""
+
+def get_tables(testdb):
+	print(testdb.get_tables())
+	return True
 
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
@@ -35,6 +32,8 @@ if __name__ == "__main__":
 	if(command == 'get_users'):
 		get_users(testdb)
 		exit()
+	if(command == 'get_tables'):
+		get_tables(testdb)
 	if(command == 'login'):
 		result = login(testdb, sys.argv[2], sys.argv[3])
 		print(result)
