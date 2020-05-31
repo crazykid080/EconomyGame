@@ -46,7 +46,10 @@ class database:
 		self.session.commit()
 		transaction_id = result.lastrowid
 		return True, transaction_id
-		
+	
+	def transfer(self, origin_id, reciever_id, amount):
+		return None
+	
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
 		if(user  == []): user = None
