@@ -49,7 +49,10 @@ class database:
 		return True, transaction_id
 	
 	def transfer(self, origin_id, reciever_id, amount):
-		return None
+		result, ref_id = input_transaction(origin_id, -amount)
+		result, ref_id = input_transaction(reciever_id, amount, ref_id)
+		#update first transaction with ref id
+		return None #Not done. Just functional
 	
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
