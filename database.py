@@ -49,9 +49,10 @@ class database:
 		return True, transaction_id
 	
 	def transfer(self, origin_id, reciever_id, amount):
-		result, ref_id = input_transaction(origin_id, -amount)
-		result, ref_id = input_transaction(reciever_id, amount, ref_id)
+		result, ref_id_o = self.input_transaction(origin_id, -amount)
+		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
+		self.transactions.update().where(self.transactions.c.id == ref_id_o).values(ref_id=ref_id_r)
 		return None #Not done. Just functional
 	
 	def get_user(self, username):

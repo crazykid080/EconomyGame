@@ -27,6 +27,9 @@ def add_transaction(testdb, account, amount):
 	result, id = testdb.input_transaction(account, amount)
 	return result
 
+def add_transfer(testdb, origin, reciever, amount):
+	testdb.transfer(origin, reciever, amount)
+
 if __name__ == "__main__":
 	if(len(sys.argv) < 2):
 		print("Not enough arguments")
@@ -38,6 +41,12 @@ if __name__ == "__main__":
 		exit()
 	if(command == 'get_tables'):
 		get_tables(testdb)
+		exit()
+	if(command == 'transfer'):
+		if(len(sys.argv) < 5):
+			print("Not enough arguments")
+			exit()
+		add_transfer(testdb, sys.argv[2], sys.argv[3], int(sys.argv[4]))
 	if(command == 'add_transaction'):
 		if(len(sys.argv) < 4):
 			print("Not enough arguments")
