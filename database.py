@@ -89,14 +89,17 @@ class database:
 		#sanitize. How? Regex maybe?
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
-		self.session.execute(new_user)
+		result = self.session.execute(new_user)
 		self.session.commit()
-		return True
+		user_id = result.lastrowid
+		add_account(user_id)
+		return True, user_id
 	
 	def add_account(self, holder, amount=0):
 		new_account = self.accounts.insert().values(holder=holder, amount=amount)
 		self.session.execute(new_account)
 		self.session.commit()
+		return None #Not tested
 	
 	def change_password(self, user, new_password):
 		#verify user exists
