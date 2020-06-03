@@ -7,7 +7,7 @@ def add_user_test(testdb, name, email, password):
 	password = password.encode()
 	enc_password = bcrypt.hashpw(password, salt)
 	result = testdb.add_user(name, email, enc_password)
-	return result
+	return result[0]
 
 def get_users(testdb):
 	users = testdb.get_all_users()

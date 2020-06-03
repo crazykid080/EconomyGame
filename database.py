@@ -99,8 +99,8 @@ class database:
 		new_account = self.accounts.insert().values(holder=holder, amount=amount)
 		self.session.execute(new_account)
 		self.session.commit()
-		return None #Not tested
-	
+		return True
+
 	def change_password(self, user, new_password):
 		#verify user exists
 		if(get_user(user) == None):
