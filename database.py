@@ -44,6 +44,7 @@ class database:
 	def input_transaction(self, account, amount, ref_id=None):
 		timestamp = datetime.datetime.utcnow()
 		new_transaction = self.transactions.insert().values(timestamp=timestamp,account_id=account,amount=amount, ref_id=ref_id)
+		self.accounts.update().where(self.accounts.c.id == account).values()
 		result = self.session.execute(new_transaction)
 		self.session.commit()
 		transaction_id = result.lastrowid
@@ -77,6 +78,13 @@ class database:
 		if(user  == []): raise NoUserExists
 		return user[0][3]	
 	
+	def get_balance(self, account):
+		selection = self.accounts.select().column('amount').where(self.accounts.c.id == account)
+		result = self.session.execute(selection)
+		print(result)
+		return result
+
+
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		user_check = self.get_user(name)
