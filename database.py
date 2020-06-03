@@ -103,12 +103,12 @@ class database:
 	def change_password(self, user, new_password):
 		#verify user exists
 		if(get_user(user) == None):
-			raise Exception
+			raise NoUserExists
 		#get current password from db
 		old_password = get_password(user)
 		#compare current to old, return false if false
 		if(old_password == new_password):
-			raise Exception
+			raise SamePassword
 		return None
 		
 	def get_tables(self):

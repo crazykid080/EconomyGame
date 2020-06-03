@@ -1,4 +1,5 @@
 import database, economy, player
+from exceptions import *
 import sys
 import bcrypt
 
