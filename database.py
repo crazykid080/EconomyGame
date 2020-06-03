@@ -92,7 +92,7 @@ class database:
 		result = self.session.execute(new_user)
 		self.session.commit()
 		user_id = result.lastrowid
-		add_account(user_id)
+		self.add_account(user_id)
 		return True, user_id
 	
 	def add_account(self, holder, amount=0):
