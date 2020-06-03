@@ -55,7 +55,7 @@ class database:
 		update = self.transactions.update().where(self.transactions.c.id == ref_id_o).values(ref_id=ref_id_r)
 		self.session.execute(update)
 		self.session.commit()
-		return None #Not done. Just functional
+		return True
 	
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
