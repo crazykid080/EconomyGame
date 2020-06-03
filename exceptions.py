@@ -3,3 +3,6 @@ class UserExists(Exception):
 
 class NoUserExists(Exception):
 	pass
+	
+class SamePassword(Exception):
+	pass
