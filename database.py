@@ -3,6 +3,7 @@ import sqlalchemy as db
 from sqlalchemy import Table, Column, Numeric, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker
 import datetime
+from exceptions import *
 
 class database:
 	connection = None
@@ -73,19 +74,17 @@ class database:
 	
 	def get_password(self, user):
 		user = self.session.query(self.users).filter_by(username=user).all()
-		if(user  == []): raise Exception
+		if(user  == []): raise NoUserExists
 		return user[0][3]	
 	
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		user_check = self.get_user(name)
 		if(user_check != None):
-			raise Exception
+			raise UserExists
 		#verify email does not exist
 		user_check = self.get_email(email)
-		if(user_check != None):
-			print(user_check)
-			raise Exception
+		if(user_check != None): raise UserExists
 		#sanitize. How? Regex maybe?
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
