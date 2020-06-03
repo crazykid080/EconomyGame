@@ -1,6 +1,7 @@
 from secret import secret_key
 import sqlalchemy as db
 from sqlalchemy import Table, Column, Numeric, Integer, String, MetaData, ForeignKey, DateTime
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker
 import datetime
 from exceptions import *
@@ -79,7 +80,7 @@ class database:
 		return user[0][3]	
 	
 	def get_balance(self, account):
-		selection = self.accounts.select().column('amount').where(self.accounts.c.id == account)
+		selection = self.accounts.select().column(text('amount')).where(self.accounts.c.id == account)
 		result = self.session.execute(selection)
 		print(result)
 		return result
