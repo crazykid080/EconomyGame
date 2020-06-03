@@ -9,7 +9,7 @@ class database:
 	session = None
 	metadata = None
 	users = None #Bad way to do it? Probably.
-	economy = None
+	accounts = None
 	transactions = None
 	def __init__(self, name='main'):
 		engine = db.create_engine('sqlite:///'+name+'.sqlite')
@@ -24,7 +24,7 @@ class database:
 		Column('email', String(40) ),
 		Column('password', String(80) ) )
 		
-		self.economy = Table('accounts', self.metadata,
+		self.accounts = Table('accounts', self.metadata,
 		Column('id', Integer, primary_key=True),
 		Column('holder', Integer),
 		Column('amount', Numeric(10,4))
@@ -92,6 +92,11 @@ class database:
 		self.session.execute(new_user)
 		self.session.commit()
 		return True
+	
+	def add_account(self, holder, amount=0):
+		new_account = self.accounts.insert().values(holder=holder, amount=amount)
+		self.session.execute(new_account)
+		self.session.commit()
 	
 	def change_password(self, user, new_password):
 		#verify user exists
