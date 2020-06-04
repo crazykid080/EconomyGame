@@ -55,6 +55,10 @@ class database:
 		return True, transaction_id
 	
 	def transfer(self, origin_id, reciever_id, amount):
+		self.verify_account(reciever_id)
+		origin_balance = self.get_balance(origin_id)
+		if(origin_balance < amount): raise NotEnoughUnits
+		if(amount < 0): raise NegativeNumber
 		result, ref_id_o = self.input_transaction(origin_id, -amount)
 		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
@@ -86,16 +90,23 @@ class database:
 		account = self.session.query(self.accounts).filter_by(id=account_id).all()
 		if(account == []): raise NoAccountExists
 		return account[0][2]
-
+		
+	def verify_account(self, account_id):
+		account = self.session.query(self.accounts).filter_by(id=account_id).all()
+		if(account == []): raise NoAccountExists
+		else: return True
+		
 	def add_user(self, name, email, password):
 		#verify user does not exist
-		user_check = self.get_user(name)
-		if(user_check != None):
-			raise UserExists
-		#verify email does not exist
-		user_check = self.get_email(email)
-		if(user_check != None): raise UserExists
-		#sanitize. How? Regex maybe?
+		try:
+			user_check = self.get_user(name)
+			#verify email does not exist
+			email_check = self.get_email(email)
+			if(user_check != None): raise UserExists
+			if(email_check != None): raise UserExists
+		except UserExists:
+			print("User already exists")
+			return False, None
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
 		result = self.session.execute(new_user)
@@ -105,25 +116,25 @@ class database:
 		return True, user_id
 	
 	def add_account(self, holder, amount=0):
+		if(amount < 0): raise NegativeNumber
 		new_account = self.accounts.insert().values(holder=holder, units=amount)
 		self.session.execute(new_account)
 		self.session.commit()
 		return True
 
 	def add_units(self, account_id, amount):
+		if(amount < 0): raise NegativeNumber
 		units_update = self.accounts.update().where(self.accounts.c.id == account_id).values(units=amount)
 		self.session.execute(units_update)
 		self.session.commit()
 
 	def change_password(self, user, new_password):
 		#verify user exists
-		if(get_user(user) == None):
-			raise NoUserExists
+		if(get_user(user) == None): raise NoUserExists
 		#get current password from db
 		old_password = get_password(user)
-		#compare current to old, return false if false
-		if(bcrypt.verify(new_password, old_password)):
-			raise SamePassword
+		#compare current to old
+		if(bcrypt.verify(new_password, old_password)): raise SamePassword
 		return None
 
 	def get_tables(self):

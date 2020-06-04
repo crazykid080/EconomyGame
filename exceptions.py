@@ -9,3 +9,9 @@ class SamePassword(Exception):
 
 class NoAccountExists(Exception):
 	pass
+
+class NotEnoughUnits(Exception):
+	pass
+	
+class NegativeNumber(Exception):
+	pass
