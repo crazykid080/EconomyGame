@@ -10,7 +10,7 @@ class database:
 	connection = None
 	session = None
 	metadata = None
-	users = None #Bad way to do it? Probably.
+	users = None
 	accounts = None
 	transactions = None
 	def __init__(self, name='main'):
