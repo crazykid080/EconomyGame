@@ -12,3 +12,6 @@ class NoAccountExists(Exception):
 
 class NotEnoughUnits(Exception):
 	pass
+	
+class NegativeNumber(Exception):
+	pass

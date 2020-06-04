@@ -58,6 +58,7 @@ class database:
 		self.verify_account(reciever_id)
 		origin_balance = self.get_balance(origin_id)
 		if(origin_balance < amount): raise NotEnoughUnits
+		if(amount < 0): raise NegativeNumber
 		result, ref_id_o = self.input_transaction(origin_id, -amount)
 		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
@@ -115,12 +116,14 @@ class database:
 		return True, user_id
 	
 	def add_account(self, holder, amount=0):
+		if(amount < 0): raise NegativeNumber
 		new_account = self.accounts.insert().values(holder=holder, units=amount)
 		self.session.execute(new_account)
 		self.session.commit()
 		return True
 
 	def add_units(self, account_id, amount):
+		if(amount < 0): raise NegativeNumber
 		units_update = self.accounts.update().where(self.accounts.c.id == account_id).values(units=amount)
 		self.session.execute(units_update)
 		self.session.commit()
