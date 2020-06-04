@@ -79,12 +79,10 @@ class database:
 		if(user  == []): raise NoUserExists
 		return user[0][3]	
 	
-	def get_balance(self, account):
-		selection = self.accounts.select().column(text('amount')).where(self.accounts.c.id == account)
-		result = self.session.execute(selection)
-		print(result)
-		return result
-
+	def get_balance(self, account_id):
+		account = self.session.query(self.accounts).filter_by(id=account_id).all()
+		if(account == []): raise NoAccountExists
+		return account[0][2]
 
 	def add_user(self, name, email, password):
 		#verify user does not exist
