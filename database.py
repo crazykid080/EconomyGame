@@ -57,7 +57,7 @@ class database:
 	def transfer(self, origin_id, reciever_id, amount):
 		self.verify_account(reciever_id)
 		origin_balance = self.get_balance(origin_id)
-		if(origin_balance < amount): raise Exception
+		if(origin_balance < amount): raise NotEnoughUnits
 		result, ref_id_o = self.input_transaction(origin_id, -amount)
 		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
