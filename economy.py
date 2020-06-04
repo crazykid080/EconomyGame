@@ -1,6 +1,6 @@
 def convert_currency(self, amount):
-	currency_units = amount * 10000
-	return currency_units
+	units = amount * 10000
+	return units
 
 class economy:
 	work_payment = 0.007
@@ -9,9 +9,9 @@ class economy:
 	
 	budget = 1000
 	
-	def work_tax(self, amount, refferer_ID):
-		taxed = amount * wage_tax
-		amount -= taxed
-		amount = round(amount, 4) #Prevent floating point errors
+	def work_tax(self, units, refferer_ID):
+		taxed = units * wage_tax
+		units -= taxed
+		units = round(units, 4) #Prevent floating point errors
 		budget += round(taxed, 4)
-		return amount
+		return units
