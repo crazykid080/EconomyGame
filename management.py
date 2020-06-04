@@ -24,6 +24,12 @@ def get_tables(testdb):
 	print(testdb.get_tables())
 	return True
 
+def get_balance(testdb, account_id):
+	amount = testdb.get_balance(account_id)
+	currency = amount/10000
+	print(currency)
+	return True
+
 def add_transaction(testdb, account, amount):
 	amount = testdb.convert_currency(amount)
 	result, id = testdb.input_transaction(account, amount)
@@ -45,6 +51,11 @@ if __name__ == "__main__":
 	if(command == 'get_tables'):
 		get_tables(testdb)
 		exit()
+	if(command == 'get_balance'):
+		if(len(sys.argv) < 3):
+			print("Not enough arguments")
+			exit()
+		get_balance(testdb, sys.argv[2])
 	if(command == 'transfer'):
 		if(len(sys.argv) < 5):
 			print("Not enough arguments")
