@@ -1,4 +1,4 @@
-def convert_currency(self, amount):
+def convert_currency(amount):
 	currency_units = amount * 10000
 	return currency_units
 
