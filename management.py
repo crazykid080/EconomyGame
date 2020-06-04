@@ -25,10 +25,12 @@ def get_tables(testdb):
 	return True
 
 def add_transaction(testdb, account, amount):
+	amount = testdb.convert_currency(amount)
 	result, id = testdb.input_transaction(account, amount)
 	return result
 
 def add_transfer(testdb, origin, reciever, amount):
+	amount = testdb.convert_currency(amount)
 	testdb.transfer(origin, reciever, amount)
 
 if __name__ == "__main__":
