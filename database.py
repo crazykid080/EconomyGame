@@ -126,10 +126,10 @@ class database:
 		#get current password from db
 		old_password = get_password(user)
 		#compare current to old, return false if false
-		if(old_password == new_password):
+		if(bcrypt.verify(new_password, old_password)):
 			raise SamePassword
 		return None
-		
+
 	def get_tables(self):
 		return self.metadata.tables.keys()
 
