@@ -55,6 +55,8 @@ class database:
 		return True, transaction_id
 	
 	def transfer(self, origin_id, reciever_id, amount):
+		self.verify_account(origin_id)
+		self.verify_account(reciever_id)
 		result, ref_id_o = self.input_transaction(origin_id, -amount)
 		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
@@ -86,12 +88,16 @@ class database:
 		account = self.session.query(self.accounts).filter_by(id=account_id).all()
 		if(account == []): raise NoAccountExists
 		return account[0][2]
-
+		
+	def verify_account(self, account_id):
+		account = self.session.query(self.accounts).filter_by(id=account_id).all()
+		if(account == []): raise NoAccountExists
+		else: return True
+		
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		user_check = self.get_user(name)
-		if(user_check != None):
-			raise UserExists
+		if(user_check != None): raise UserExists
 		#verify email does not exist
 		user_check = self.get_email(email)
 		if(user_check != None): raise UserExists
@@ -117,13 +123,11 @@ class database:
 
 	def change_password(self, user, new_password):
 		#verify user exists
-		if(get_user(user) == None):
-			raise NoUserExists
+		if(get_user(user) == None): raise NoUserExists
 		#get current password from db
 		old_password = get_password(user)
 		#compare current to old, return false if false
-		if(bcrypt.verify(new_password, old_password)):
-			raise SamePassword
+		if(bcrypt.verify(new_password, old_password)): raise SamePassword
 		return None
 
 	def get_tables(self):
