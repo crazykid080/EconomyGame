@@ -106,7 +106,6 @@ class database:
 		except UserExists:
 			print("User already exists")
 			return False, None
-		#sanitize. How? Regex maybe?
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
 		result = self.session.execute(new_user)
@@ -131,7 +130,7 @@ class database:
 		if(get_user(user) == None): raise NoUserExists
 		#get current password from db
 		old_password = get_password(user)
-		#compare current to old, return false if false
+		#compare current to old
 		if(bcrypt.verify(new_password, old_password)): raise SamePassword
 		return None
 
