@@ -68,7 +68,7 @@ class database:
 	
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
-		if(user  == []): raise NoUserExists
+		if(user  == []): user = None
 		return user
 	
 	def get_all_users(self):
@@ -77,7 +77,7 @@ class database:
 	
 	def get_email(self, email):
 		user = self.session.query(self.users).filter_by(email=email).all()
-		if(user  == []): raise NoUserExists
+		if(user  == []): user = None
 		return user
 	
 	def get_password(self, user):
@@ -100,9 +100,12 @@ class database:
 		try:
 			user_check = self.get_user(name)
 			#verify email does not exist
-			user_check = self.get_email(email)
+			email_check = self.get_email(email)
+			if(user_check != None): raise UserExists
+			if(email_check != None): raise UserExists
 		except UserExists:
-			return False
+			print("User already exists")
+			return False, None
 		#sanitize. How? Regex maybe?
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
