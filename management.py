@@ -1,4 +1,5 @@
 import database, economy, player
+from economy import convert_currency
 from exceptions import *
 import sys
 import bcrypt
@@ -31,17 +32,17 @@ def get_balance(testdb, account_id):
 	return True
 
 def add_transaction(testdb, account, amount):
-	amount = testdb.convert_currency(amount)
+	amount = convert_currency(amount)
 	result, id = testdb.input_transaction(account, amount)
 	return result
 
 def add_transfer(testdb, origin, reciever, amount):
-	amount = testdb.convert_currency(amount)
+	amount = convert_currency(amount)
 	result = testdb.transfer(origin, reciever, amount)
 	return result
 
 def add_money(testdb, account, amount):
-	units = testdb.convert_currency(amount)
+	units = convert_currency(amount)
 	testdb.input_transaction(account, units, "MINT")
 
 if __name__ == "__main__":

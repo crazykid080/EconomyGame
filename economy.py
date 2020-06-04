@@ -1,3 +1,7 @@
+def convert_currency(self, amount):
+	currency_units = amount * 10000
+	return currency_units
+
 class economy:
 	work_payment = 0.007
 	wage_tax = 0.35

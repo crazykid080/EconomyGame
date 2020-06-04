@@ -41,10 +41,6 @@ class database:
 		)
 		
 		self.metadata.create_all(engine)
-	
-	def convert_currency(self, amount):
-		currency_units = amount * 10000
-		return currency_units
 
 	def input_transaction(self, account, amount, ref_id=None):
 		timestamp = datetime.datetime.utcnow()
