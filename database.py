@@ -55,8 +55,9 @@ class database:
 		return True, transaction_id
 	
 	def transfer(self, origin_id, reciever_id, amount):
-		self.verify_account(origin_id)
 		self.verify_account(reciever_id)
+		origin_balance = self.get_balance(origin_id)
+		if(origin_balance < amount): raise Exception
 		result, ref_id_o = self.input_transaction(origin_id, -amount)
 		result, ref_id_r = self.input_transaction(reciever_id, amount, ref_id_o)
 		#update first transaction with ref id
@@ -67,7 +68,7 @@ class database:
 	
 	def get_user(self, username):
 		user = self.session.query(self.users).filter_by(username=username).all()
-		if(user  == []): user = None
+		if(user  == []): raise NoUserExists
 		return user
 	
 	def get_all_users(self):
@@ -76,7 +77,7 @@ class database:
 	
 	def get_email(self, email):
 		user = self.session.query(self.users).filter_by(email=email).all()
-		if(user  == []): user = None
+		if(user  == []): raise NoUserExists
 		return user
 	
 	def get_password(self, user):
@@ -96,11 +97,12 @@ class database:
 		
 	def add_user(self, name, email, password):
 		#verify user does not exist
-		user_check = self.get_user(name)
-		if(user_check != None): raise UserExists
-		#verify email does not exist
-		user_check = self.get_email(email)
-		if(user_check != None): raise UserExists
+		try:
+			user_check = self.get_user(name)
+			#verify email does not exist
+			user_check = self.get_email(email)
+		except UserExists:
+			return False
 		#sanitize. How? Regex maybe?
 		#add user to database
 		new_user = self.users.insert().values(username=name, email=email, password=password)
