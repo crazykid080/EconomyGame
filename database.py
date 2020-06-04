@@ -29,22 +29,26 @@ class database:
 		self.accounts = Table('accounts', self.metadata,
 		Column('id', Integer, primary_key=True),
 		Column('holder', Integer),
-		Column('amount', Numeric(10,4))
+		Column('units', Integer)
 		)
 		
 		self.transactions = Table('transactions', self.metadata,
 		Column('id', Integer, primary_key=True),
 		Column('timestamp', DateTime, default=datetime.datetime.utcnow()),
 		Column('account_id', Integer),
-		Column('amount', Numeric(10,4)),
+		Column('units', Integer),
 		Column('ref_id', Integer)
 		)
 		
 		self.metadata.create_all(engine)
 	
+	def convert_currency(self, amount):
+		currency_units = amount * 10000
+		return currency_units
+
 	def input_transaction(self, account, amount, ref_id=None):
 		timestamp = datetime.datetime.utcnow()
-		new_transaction = self.transactions.insert().values(timestamp=timestamp,account_id=account,amount=amount, ref_id=ref_id)
+		new_transaction = self.transactions.insert().values(timestamp=timestamp,account_id=account,units=amount, ref_id=ref_id)
 		self.accounts.update().where(self.accounts.c.id == account).values()
 		result = self.session.execute(new_transaction)
 		self.session.commit()
@@ -102,7 +106,7 @@ class database:
 		return True, user_id
 	
 	def add_account(self, holder, amount=0):
-		new_account = self.accounts.insert().values(holder=holder, amount=amount)
+		new_account = self.accounts.insert().values(holder=holder, units=amount)
 		self.session.execute(new_account)
 		self.session.commit()
 		return True
