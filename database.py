@@ -49,7 +49,10 @@ class database:
 	def input_transaction(self, account, amount, ref_id=None):
 		timestamp = datetime.datetime.utcnow()
 		new_transaction = self.transactions.insert().values(timestamp=timestamp,account_id=account,units=amount, ref_id=ref_id)
-		self.accounts.update().where(self.accounts.c.id == account).values()
+		balance = self.get_balance(account)
+		balance = balance + amount
+		account_update = self.accounts.update().where(self.accounts.c.id == account).values(units=balance)
+		self.session.execute(account_update)
 		result = self.session.execute(new_transaction)
 		self.session.commit()
 		transaction_id = result.lastrowid
@@ -110,6 +113,11 @@ class database:
 		self.session.execute(new_account)
 		self.session.commit()
 		return True
+
+	def add_units(self, account_id, amount):
+		units_update = self.accounts.update().where(self.accounts.c.id == account_id).values(units=amount)
+		self.session.execute(units_update)
+		self.session.commit()
 
 	def change_password(self, user, new_password):
 		#verify user exists

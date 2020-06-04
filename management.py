@@ -37,7 +37,12 @@ def add_transaction(testdb, account, amount):
 
 def add_transfer(testdb, origin, reciever, amount):
 	amount = testdb.convert_currency(amount)
-	testdb.transfer(origin, reciever, amount)
+	result = testdb.transfer(origin, reciever, amount)
+	return result
+
+def add_money(testdb, account, amount):
+	units = testdb.convert_currency(amount)
+	testdb.input_transaction(account, units, "MINT")
 
 if __name__ == "__main__":
 	if(len(sys.argv) < 3):
@@ -56,11 +61,17 @@ if __name__ == "__main__":
 			print("Not enough arguments")
 			exit()
 		get_balance(testdb, sys.argv[3])
+	if(command == 'add_money'):
+		if(len(sys.argv) < 5):
+			print("Not enough arguments")
+			exit()
+		add_money(testdb, sys.argv[3], float(sys.argv[4]))
 	if(command == 'transfer'):
 		if(len(sys.argv) < 6):
 			print("Not enough arguments")
 			exit()
-		add_transfer(testdb, sys.argv[3], sys.argv[4], int(sys.argv[5]))
+		result = add_transfer(testdb, sys.argv[3], sys.argv[4], float(sys.argv[5]))
+		print(result)
 	if(command == 'add_transaction'):
 		if(len(sys.argv) < 5):
 			print("Not enough arguments")
