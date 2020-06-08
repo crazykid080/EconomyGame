@@ -24,6 +24,7 @@ class economy:
 		
 	def read_state(self, file):
 		json_data = json.read(file+".json")
+		print(json_data["test"])
 		pass
 	
 	def write_state(self, file):
