@@ -95,7 +95,12 @@ class database:
 		account = self.session.query(self.accounts).filter_by(id=account_id).all()
 		if(account == []): raise NoAccountExists
 		else: return True
-		
+	
+	def get_account(self, account_id):
+		account = self.session.query(self.accounts).filter_by(id=account_id).all()
+		if(account == []): raise NoAccountExists
+		else: return account
+
 	def add_user(self, name, email, password):
 		#verify user does not exist
 		try:
