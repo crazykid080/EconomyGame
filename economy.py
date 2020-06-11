@@ -23,7 +23,8 @@ class economy:
 		return units
 		
 	def read_state(self, file):
-		json_data = json.read(file+".json")
+		file_obj = open(file + '.json')
+		json_data = json.load(file_obj)
 		print(json_data["test"])
 		pass
 	
