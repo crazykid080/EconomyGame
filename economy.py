@@ -14,6 +14,7 @@ class economy:
 	wage_tax = 0.35
 	referral_tax = 0.1
 	account = None
+	user = None
 
 	def __init__(self, database):
 		try:
@@ -22,7 +23,16 @@ class economy:
 				self.account = account
 		except NoAccountExists:
 			database.add_account("SYSTEM", 1000000)
-	
+			account = database.get_account(1)
+			self.account = account
+		try:
+			user = database.get_user(1)
+			if(user == None):
+				database.add_user("SYSTEM", "SYSTEM", None)
+				user = database.get_user(1)
+			if(user[0][1] == "SYSTEM"):
+				self.user = user
+
 	def work_tax(self, units, refferer_ID):
 		taxed = units * self.wage_tax
 		units -= taxed
